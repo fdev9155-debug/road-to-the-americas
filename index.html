@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Road to the Americas – free motorsport racing in your browser</title>
+<meta name="description" content="Free motorsport racing in your browser. Stock cars at Daytona are playable now, against AI drivers in clear weather, rain or a night thunderstorm. More disciplines are planned. No download; plays on phones, tablets and computers.">
+<meta name="theme-color" content="#111316">
+<meta property="og:title" content="Road to the Americas">
+<meta property="og:description" content="Free motorsport racing in your browser. Stock cars at Daytona are playable now.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="assets/img/icon-144.png">
+<link rel="apple-touch-icon" href="assets/img/icon-180.png">
+<link rel="preload" href="assets/fonts/BarlowCondensed-Bold.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- desktop: fixed sidebar -->
+<aside class="side" aria-label="Site">
+  <a class="logo" href="./" aria-label="Road to the Americas home"><img src="assets/img/logo.png" width="190" height="95" alt="Road to the Americas"></a>
+  <nav class="nav" aria-label="Main">
+    <a class="nav-item" href="#play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4m0 0h11l-2 4 2 4H5"/></svg>Play</a>
+    <p class="nav-group">Game</p>
+    <a class="nav-item" href="#disciplines"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2"/><path d="M12 14v7M10.2 11L3.5 9M13.8 11l6.7-2"/></svg>Disciplines</a>
+    <a class="nav-item" href="#setup"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>Race setup</a>
+    <a class="nav-item" href="#screens"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M4 18l5-5 4 4 3-3 4 4"/></svg>Screens</a>
+    <p class="nav-group">Guide</p>
+    <a class="nav-item" href="#controls"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="8" width="19" height="9" rx="4"/><path d="M7 10.5v4M5 12.5h4"/><circle cx="16" cy="11.5" r="1"/><circle cx="18.5" cy="14" r="1"/></svg>Controls</a>
+    <a class="nav-item" href="#updates"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14M5 12h14M5 18h9"/></svg>Updates</a>
+  </nav>
+  <div class="side-foot">
+    <div class="tip"><strong>On a phone or tablet?</strong><span>Tap Share, then Add to Home Screen, to play full screen.</span></div>
+    <p class="build"><i aria-hidden="true"></i>Build 2026-11-19</p>
+  </div>
+</aside>
+
+<!-- phone and tablet: top bar and bottom tabs -->
+<header class="mobile-bar">
+  <a class="logo" href="./" aria-label="Road to the Americas home"><img src="assets/img/logo.png" width="120" height="60" alt="Road to the Americas"></a>
+  <a class="btn-play small" href="play/">Play free</a>
+</header>
+<nav class="tabbar" aria-label="Sections">
+  <a class="tab" href="#play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4m0 0h11l-2 4 2 4H5"/></svg>Play</a>
+  <a class="tab" href="#disciplines"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2"/><path d="M12 14v7M10.2 11L3.5 9M13.8 11l6.7-2"/></svg>Disciplines</a>
+  <a class="tab" href="#setup"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>Setup</a>
+  <a class="tab" href="#screens"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M4 18l5-5 4 4 3-3 4 4"/></svg>Screens</a>
+  <a class="tab" href="#controls"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="8" width="19" height="9" rx="4"/><path d="M7 10.5v4M5 12.5h4"/><circle cx="16" cy="11.5" r="1"/><circle cx="18.5" cy="14" r="1"/></svg>Controls</a>
+  <a class="tab" href="#updates"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14M5 12h14M5 18h9"/></svg>Updates</a>
+</nav>
+
+<main class="main" id="main">
+  <section class="page" id="play" aria-labelledby="play-title">
+    <header class="page-head">
+      <h1 id="play-title">Play</h1>
+      <p>Free motorsport racing in your browser. Stock cars at Daytona are playable now.</p>
+    </header>
+
+    <div class="play-grid">
+      <div class="cards">
+        <article class="card hero-card" aria-labelledby="quick-title">
+          <img class="card-img" src="assets/img/hero.jpg" width="1920" height="1080" alt="">
+          <div class="chips"><span class="chip chip-blue">Stock cars</span><span class="chip">Daytona oval</span><span class="chip">Clear to thunderstorm</span></div>
+          <div class="timing" aria-label="Session summary">
+            <div class="timing-head">Session</div>
+            <dl>
+              <div><dt>Mode</dt><dd>Quick race</dd></div>
+              <div><dt>Laps</dt><dd>3 to 20</dd></div>
+              <div><dt>Field</dt><dd>Up to 40</dd></div>
+              <div><dt>Time</dt><dd>Dawn to night</dd></div>
+            </dl>
+          </div>
+          <div class="hero-text">
+            <h2 id="quick-title" class="big-title">Quick race</h2>
+            <p class="sub">Race the AI, start to flag</p>
+            <a class="btn-play" href="play/">Play free</a>
+          </div>
+          <div class="dash" aria-hidden="true">
+            <div class="revs" id="revs">
+              <i class="g on"></i><i class="g on"></i><i class="g on"></i><i class="g on"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i>
+              <i class="g"></i><i class="g"></i><i class="y"></i><i class="y"></i><i class="y"></i><i class="y"></i><i class="y"></i><i class="r"></i><i class="r"></i><i class="r"></i>
+            </div>
+            <div class="dash-row">
+              <div class="speed"><span class="num" id="spd">0</span><span class="unit">mph</span></div>
+              <div class="gear"><span class="num" id="gear">N</span></div>
+              <div class="delta"><span class="unit">delta</span><i></i></div>
+            </div>
+          </div>
+        </article>
+
+        <div class="mini-cards">
+          <article class="card mini rain">
+            <img class="card-img" src="assets/img/rain.jpg" width="1280" height="720" alt="" loading="lazy">
+            <span class="chip chip-blue">Weather</span>
+            <div class="mini-text"><h3 class="big-title">Rain and storms</h3><p>Clear, overcast, rain or thunderstorm. A wet track means less grip.</p></div>
+          </article>
+          <article class="card mini night">
+            <img class="card-img" src="assets/img/night.jpg" width="1280" height="720" alt="" loading="lazy">
+            <span class="chip chip-purple">Time of day</span>
+            <div class="mini-text"><h3 class="big-title">Night racing</h3><p>Start at night, or turn on the day and night cycle.</p></div>
+          </article>
+          <article class="card mini damage">
+            <img class="card-img" src="assets/img/damage.jpg" width="1280" height="720" alt="" loading="lazy">
+            <span class="chip chip-red">Damage</span>
+            <div class="mini-text"><h3 class="big-title">Crash damage</h3><p>Bumpers dent and fall off. Lose a wheel and your race ends.</p></div>
+          </article>
+        </div>
+      </div>
+
+      <aside class="qr" id="setup" aria-labelledby="qr-title">
+        <div class="qr-head"><span class="qr-tag">Stock cars</span><h2 id="qr-title" class="big-title">Quick race</h2></div>
+        <div class="qr-scroll">
+          <div class="stats">
+            <div class="stat"><span class="k">Field</span><span class="v">Up to 40</span></div>
+            <div class="stat"><span class="k">Laps</span><span class="v">3 to 20</span></div>
+            <div class="stat"><span class="k">AI levels</span>
+              <span class="minis" aria-label="Four AI levels"><b style="--c:#e0242f">R</b><b style="--c:#f08a24">P</b><b style="--c:#2fbf5b">V</b><b style="--c:#2f7bff">L</b></span>
+            </div>
+          </div>
+          <p class="qr-hint">These Quick Race settings apply to the stock car mode. The highlighted choice is what a first-time player starts with.</p>
+
+          <div class="opt">
+            <h3>Laps</h3>
+            <ul class="pills">
+              <li class="pill is-default">3<span class="tag">default</span></li><li class="pill">5</li><li class="pill">10</li><li class="pill">20</li>
+            </ul>
+          </div>
+          <div class="opt">
+            <h3>AI drivers</h3>
+            <ul class="pills">
+              <li class="pill lic" style="--c:#e0242f"><b>R</b>Rookie</li>
+              <li class="pill lic" style="--c:#f08a24"><b>P</b>Pro</li>
+              <li class="pill lic is-default" style="--c:#2fbf5b"><b>V</b>Veteran<span class="tag">default</span></li>
+              <li class="pill lic" style="--c:#2f7bff"><b>L</b>Legend</li>
+            </ul>
+            <p class="opt-note">Legend is the toughest and keeps pace with you.</p>
+          </div>
+          <div class="opt">
+            <h3>Field size</h3>
+            <ul class="pills">
+              <li class="pill">0</li><li class="pill is-default">8<span class="tag">default</span></li><li class="pill">16</li><li class="pill">24</li><li class="pill">32</li><li class="pill">40</li>
+            </ul>
+            <p class="opt-note">Cars on track besides you. The desktop game starts with 16.</p>
+          </div>
+          <div class="opt">
+            <h3>Weather</h3>
+            <ul class="pills">
+              <li class="pill is-default">Clear<span class="tag">default</span></li><li class="pill">Overcast</li><li class="pill">Rain</li><li class="pill">Thunderstorm</li>
+            </ul>
+            <p class="opt-note">Rain makes the track slick, and your spotter warns you.</p>
+          </div>
+          <div class="opt">
+            <h3>Time of day</h3>
+            <ul class="pills">
+              <li class="pill">Dawn</li><li class="pill">Morning</li><li class="pill is-default">Noon<span class="tag">default</span></li><li class="pill">Afternoon</li><li class="pill">Sunset</li><li class="pill">Night</li>
+            </ul>
+          </div>
+          <div class="opt">
+            <h3>Day and night cycle</h3>
+            <ul class="pills">
+              <li class="pill is-default">Off<span class="tag">default</span></li><li class="pill">On</li>
+            </ul>
+            <p class="opt-note">Watch the light change during a long race.</p>
+          </div>
+          <div class="opt">
+            <h3>Damage</h3>
+            <ul class="pills">
+              <li class="pill">Arcade</li><li class="pill is-default">Realistic<span class="tag">default</span></li><li class="pill">Severe</li>
+            </ul>
+            <p class="opt-note">Hard hits dent the bumper, bumpers can hang or fall off, and losing a wheel ends your race.</p>
+          </div>
+        </div>
+        <div class="qr-foot">
+          <div class="first-load"><span class="k">First load</span><span class="v">About 100 MB</span><span class="n">Then it is saved on your device. On a phone, hold it sideways.</span></div>
+          <a class="btn-play" href="play/">Play free</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="page" id="disciplines" aria-labelledby="disc-title">
+    <header class="page-head"><h2 id="disc-title" class="page-title">Disciplines</h2><p>What you can race now, and what comes next.</p></header>
+    <ul class="classes">
+      <li class="class is-selected">
+        <span class="class-thumb" aria-hidden="true"></span>
+        <span class="class-body"><span class="class-name">Stock cars</span><span class="class-sub">Daytona oval</span></span>
+        <span class="class-badge now">Playable now</span>
+      </li>
+      <li class="class is-planned" aria-disabled="true">
+        <span class="class-thumb ghost" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 21V4m0 0h11l-2 4 2 4H5"/></svg></span>
+        <span class="class-body"><span class="class-name">More disciplines</span><span class="class-sub">The aim is every form of motorsport except bikes, added one at a time.</span></span>
+        <span class="class-badge soon">Planned</span>
+      </li>
+    </ul>
+  </section>
+
+  <section class="page" id="screens" aria-labelledby="screens-title">
+    <header class="page-head"><h2 id="screens-title" class="page-title">Screens</h2><p>Screenshots from the current build.</p></header>
+    <div class="shots">
+      <figure class="card shot s3"><img class="card-img" src="assets/img/race.jpg" width="1280" height="720" alt="Daytime race with the speedometer, shifter and track map on screen" loading="lazy"><figcaption><span class="big-title">Racing</span><span>Speedometer, shifter and track map.</span></figcaption></figure>
+      <figure class="card shot s3"><img class="card-img" src="assets/img/storm.jpg" width="1280" height="720" alt="Racing in a dark thunderstorm with rain on the track" loading="lazy"><figcaption><span class="big-title">Thunderstorm</span><span>Night racing in heavy rain.</span></figcaption></figure>
+      <figure class="card shot s2"><img class="card-img" src="assets/img/grid.jpg" width="1280" height="592" alt="Overhead view of a full grid of colored stock cars lined up on the Daytona front straight" loading="lazy"><figcaption><span class="big-title">Starting grid</span><span>Before the green flag.</span></figcaption></figure>
+      <figure class="card shot s2"><img class="card-img pos-left" src="assets/img/setup.jpg" width="1280" height="720" alt="Race setup screen with laps, difficulty, weather and damage options" loading="lazy"><figcaption><span class="big-title">Race setup</span><span>Rain and night selected.</span></figcaption></figure>
+      <figure class="card shot s2"><img class="card-img pos-left" src="assets/img/menu.jpg" width="1280" height="720" alt="Main menu with Play, Garage, Settings and Credits over a view of the car" loading="lazy"><figcaption><span class="big-title">Main menu</span><span>Play, Garage, Settings.</span></figcaption></figure>
+    </div>
+  </section>
+
+  <section class="page" id="controls" aria-labelledby="controls-title">
+    <header class="page-head"><h2 id="controls-title" class="page-title">Controls</h2><p>Keyboard, game controller or touch screen.</p></header>
+    <div class="controls">
+      <div class="card panel">
+        <div class="panel-head">Keyboard</div>
+        <table class="keys">
+          <caption class="sr">Keyboard controls</caption>
+          <thead class="sr"><tr><th scope="col">Action</th><th scope="col">Keys</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Gas</th><td><span class="cap">W</span><span class="cap">&uarr;</span></td></tr>
+            <tr><th scope="row">Brake</th><td><span class="cap">S</span><span class="cap">&darr;</span></td></tr>
+            <tr><th scope="row">Steer</th><td><span class="cap">A</span><span class="cap">D</span><span class="cap">&larr;</span><span class="cap">&rarr;</span></td></tr>
+            <tr><th scope="row">Shift down, shift up</th><td><span class="cap">Q</span><span class="cap">E</span></td></tr>
+            <tr><th scope="row">Change camera</th><td><span class="cap">C</span></td></tr>
+            <tr><th scope="row">Show or hide the data card</th><td><span class="cap">B</span></td></tr>
+            <tr><th scope="row">Pit service</th><td><span class="cap">P</span></td></tr>
+            <tr><th scope="row">Put the car back on track</th><td><span class="cap">R</span></td></tr>
+            <tr><th scope="row">Pause</th><td><span class="cap">Esc</span></td></tr>
+          </tbody>
+        </table>
+        <p class="note">A game controller also works: left stick steers, right trigger is gas, left trigger is brake.</p>
+      </div>
+      <div class="card panel">
+        <div class="panel-head">Touch screen</div>
+        <div class="touch">
+          <svg class="phone" viewBox="0 0 520 260" role="img" aria-label="Touch layout: steering strip on the left, brake and gas pedals on the right, shift buttons above them, and pause, camera, pit and data buttons down the right edge">
+            <rect x="2" y="2" width="516" height="256" rx="26" fill="#0e1013" stroke="#2a2e35" stroke-width="4"/>
+            <rect x="14" y="14" width="492" height="232" rx="14" fill="#1b1e23"/>
+            <rect x="26" y="160" width="170" height="74" fill="#262a31" stroke="#3dba55" stroke-width="2"/>
+            <text x="111" y="204" text-anchor="middle" font-size="22" fill="#eef0f2">STEER</text>
+            <rect x="26" y="118" width="58" height="28" fill="#262a31"/>
+            <text x="55" y="138" text-anchor="middle" font-size="16" fill="#eef0f2">RESET</text>
+            <rect x="318" y="168" width="78" height="66" fill="#262a31"/>
+            <text x="357" y="208" text-anchor="middle" font-size="22" fill="#eef0f2">BRAKE</text>
+            <rect x="408" y="150" width="88" height="84" fill="#3dba55"/>
+            <text x="452" y="199" text-anchor="middle" font-size="26" fill="#0e1013">GAS</text>
+            <rect x="318" y="122" width="38" height="32" fill="#262a31"/><text x="337" y="145" text-anchor="middle" font-size="22" fill="#eef0f2">+</text>
+            <rect x="362" y="122" width="38" height="32" fill="#262a31"/><text x="381" y="145" text-anchor="middle" font-size="22" fill="#eef0f2">&minus;</text>
+            <rect x="458" y="26" width="38" height="28" fill="#262a31"/><text x="477" y="46" text-anchor="middle" font-size="15" fill="#eef0f2">II</text>
+            <rect x="458" y="60" width="38" height="28" fill="#262a31"/><text x="477" y="80" text-anchor="middle" font-size="13" fill="#eef0f2">CAM</text>
+            <rect x="458" y="94" width="38" height="28" fill="#262a31"/><text x="477" y="114" text-anchor="middle" font-size="13" fill="#eef0f2">PIT</text>
+            <rect x="458" y="128" width="38" height="18" fill="#262a31"/><text x="477" y="142" text-anchor="middle" font-size="11" fill="#eef0f2">DATA</text>
+          </svg>
+          <p>Slide your left thumb along the strip to steer. Right thumb handles gas and brake, and the + and &minus; buttons shift gears. The controls appear the first time you touch the screen.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="updates" aria-labelledby="updates-title">
+    <header class="page-head"><h2 id="updates-title" class="page-title">Updates</h2><p>What changed, newest first.</p></header>
+    <div class="card panel">
+      <ol class="log">
+        <li>
+          <time datetime="2026-11-19">Nov 19, 2026</time>
+          <div>
+            <h3>Play in your browser</h3>
+            <ul>
+            <li>The game now runs on this site on phones, tablets and computers.</li>
+            <li>Touch controls: steering strip, gas, brake, shifting, pause, camera, pit and data buttons.</li>
+            <li>On the web the game adjusts its 3D resolution during a race to hold a smooth frame rate.</li>
+            <li>Smaller first download, and the game is saved on your device after the first play.</li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <time datetime="2026-11-17">Nov 17, 2026</time>
+          <div>
+            <h3>Weather, damage and a new look</h3>
+            <ul>
+            <li>Weather: clear, overcast, rain and thunderstorm with lightning, plus a day and night cycle.</li>
+            <li>Quick Race setup: laps, AI difficulty, field size, weather, time of day and damage level.</li>
+            <li>Crash damage: bumpers dent, hang and fall off, wheels can break away, and losing a wheel retires you from the race.</li>
+            <li>Faster, more competitive AI with four skill levels.</li>
+            <li>New main menu, pause menu, launch intro and broadcast-style race HUD.</li>
+            <li>Spotter calls for the green flag, traffic, rain and wheel loss.</li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <p><strong>Fan-made game.</strong> Not affiliated with or endorsed by NASCAR or Daytona International Speedway. Your settings are saved in this browser only.</p>
+    <p><strong>Credits.</strong> Menus and HUD use the Barlow Condensed typeface (SIL Open Font License). Asphalt and grass textures are CC0 sets from Poly Haven. Trackside ambience: &ldquo;Nascar-TMS-1998&rdquo; by FreqMan on Freesound, licensed CC BY 4.0. The spotter&rsquo;s calls are synthetic voice.</p>
+    <p class="build-line">Build 2026-11-19</p>
+  </footer>
+</main>
+
+<script src="site.js"></script>
+</body>
+</html>
