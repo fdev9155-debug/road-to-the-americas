@@ -1,303 +1,103 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Road to the Americas – free motorsport racing in your browser</title>
-<meta name="description" content="Free motorsport racing in your browser. Stock cars at Daytona are playable now, against AI drivers in clear weather, rain or a night thunderstorm. More disciplines are planned. No download; plays on phones, tablets and computers.">
-<meta name="theme-color" content="#111316">
-<meta property="og:title" content="Road to the Americas">
-<meta property="og:description" content="Free motorsport racing in your browser. Stock cars at Daytona are playable now.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Road to the Americas | Free racing in your browser</title>
+<meta name="description" content="Build your own stock car, race your way up the series and earn sponsors. Free in your browser, on phone, tablet and PC.">
+<meta name="theme-color" content="#0e1013">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="website">
-<meta property="og:image" content="assets/img/og.jpg">
+<meta property="og:title" content="Road to the Americas">
+<meta property="og:description" content="Build your own stock car, race your way up the series and earn sponsors. Free in your browser.">
+<meta property="og:image" content="og.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" type="image/png" href="assets/img/icon-144.png">
-<link rel="apple-touch-icon" href="assets/img/icon-180.png">
-<link rel="preload" href="assets/fonts/BarlowCondensed-Bold.ttf" as="font" type="font/ttf" crossorigin>
-<link rel="stylesheet" href="style.css">
+<style>
+/* Critical CSS: paints the boot screen before any script or stylesheet arrives (no white flash, no engine splash). */
+@font-face{font-family:"Barlow Condensed";font-weight:500;src:url(fonts/BarlowCondensed-Medium.ttf) format("truetype");font-display:swap}
+@font-face{font-family:"Barlow Condensed";font-weight:600;src:url(fonts/BarlowCondensed-SemiBold.ttf) format("truetype");font-display:swap}
+@font-face{font-family:"Barlow Condensed";font-weight:700;src:url(fonts/BarlowCondensed-Bold.ttf) format("truetype");font-display:swap}
+:root{--bg:#0e1013;--text:#eef0f2;--muted:#929aa4;--green:#3dba55;--gold:#f4c20d;--display:"Barlow Condensed","Arial Narrow","Helvetica Neue",Arial,sans-serif;--body:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:var(--body);overflow:hidden;overscroll-behavior:none;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
+#game-root{position:fixed;inset:0;z-index:0;background:var(--bg)}
+#game-root canvas{display:block;width:100%;height:100%;touch-action:none}
+#ui-root{position:fixed;inset:0;z-index:10}
+#boot{position:absolute;inset:0;z-index:60;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;background:radial-gradient(120% 90% at 50% 38%,#1a1d22 0%,#0e1013 62%,#08090b 100%);transition:opacity .55s ease,visibility .55s;overflow:hidden}
+#boot[hidden]{display:none}
+#boot.out{opacity:0;visibility:hidden}
+.boot-lines{position:absolute;inset:-20%;background:repeating-linear-gradient(100deg,transparent 0 120px,rgba(61,186,85,.05) 120px 122px,transparent 122px 260px);animation:lines 6s linear infinite;pointer-events:none}
+@keyframes lines{to{transform:translateX(-260px)}}
+.boot-center{position:relative;display:flex;flex-direction:column;align-items:center;width:min(86vw,560px)}
+.boot-logo{width:100%;height:auto;overflow:visible;display:block}
+.boot-logo .m-sun{transform-box:fill-box;transform-origin:50% 100%;animation:sunrise .9s .1s cubic-bezier(.2,.8,.2,1) both}
+.boot-logo .m-ring{transform-box:fill-box;transform-origin:50% 50%;animation:ringin .9s .2s cubic-bezier(.2,.8,.2,1) both}
+.boot-logo .m-road{transform-box:fill-box;transform-origin:50% 100%;animation:roadgrow .75s .35s cubic-bezier(.2,.8,.2,1) both}
+.boot-logo .m-dash rect{animation:dashin .25s both}
+.boot-logo .m-dash rect:nth-child(1){animation-delay:.95s}.boot-logo .m-dash rect:nth-child(2){animation-delay:.85s}.boot-logo .m-dash rect:nth-child(3){animation-delay:.75s}.boot-logo .m-dash rect:nth-child(4){animation-delay:.65s}
+.boot-logo .wm1{animation:slidein .6s .85s cubic-bezier(.2,.8,.2,1) both}
+.boot-logo .wm2{animation:slidein .7s .95s cubic-bezier(.2,.8,.2,1) both}
+@keyframes sunrise{from{transform:translateY(40px) scale(.3);opacity:0}to{transform:none;opacity:1}}
+@keyframes ringin{from{transform:scale(.55);opacity:0}to{transform:none;opacity:1}}
+@keyframes roadgrow{from{transform:scaleY(.02);opacity:0}to{transform:none;opacity:1}}
+@keyframes dashin{from{opacity:0}to{opacity:1}}
+@keyframes slidein{from{transform:translateX(-34px);opacity:0}to{transform:none;opacity:1}}
+.boot-bar{position:relative;width:min(70%,340px);height:5px;margin-top:34px;background:#23272d;border-radius:3px;overflow:hidden;animation:fadein .5s 1s both}
+.boot-bar i{position:absolute;inset:0;background:var(--green);transform-origin:0 50%;transform:scaleX(0);transition:transform .35s ease}
+.boot-label{margin-top:14px;min-height:1.4em;font:600 1rem var(--display);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);animation:fadein .5s 1s both}
+.boot-start{margin-top:6px;background:none;border:0;color:var(--text);font:700 clamp(1.5rem,4vw,2rem) var(--display);font-style:italic;letter-spacing:.24em;text-transform:uppercase;padding:14px 22px;cursor:pointer;animation:blink 1.6s ease-in-out infinite}
+.boot-start[hidden]{display:none}
+.boot.ready .boot-bar,.boot.ready .boot-label{display:none}
+.boot.go .boot-logo{animation:bgo .9s ease-in both}.boot.go .boot-start{animation:none;opacity:0}
+@keyframes bgo{to{transform:scale(1.08);filter:brightness(1.6)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.boot-foot{position:absolute;left:0;right:0;bottom:max(14px,env(safe-area-inset-bottom));text-align:center;font-size:.72rem;color:#6e7680;padding:0 16px}
+noscript{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:var(--bg);color:var(--text);font:1.1rem var(--body);padding:24px;text-align:center}
+@media (prefers-reduced-motion:reduce){.boot-lines,.boot-logo *,.boot-start{animation:none!important}.boot-bar i{transition:none}}
+</style>
+  <script type="module" crossorigin src="./assets/index-BKAv9yw5.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-Ds3LGu6r.css">
 </head>
 <body>
-<a class="skip" href="#main">Skip to content</a>
+<div id="game-root"></div>
+<div id="ui-root">
+  <div id="boot" role="status" aria-live="polite">
+    <div class="boot-lines"></div>
+    <div class="boot-center">
+      <svg class="boot-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 604 200" width="604" height="200" role="img" aria-label="Road to the Americas"><g class="mk">
+  <defs>
+    <linearGradient id="lring" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#aab2bb"/></linearGradient>
+    <radialGradient id="lsun" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffe27a"/><stop offset="1" stop-color="#f4c20d"/></radialGradient>
+  </defs>
+  <g class="m-sun"><circle cx="100" cy="40" r="15" fill="url(#lsun)"/></g>
+  <g class="m-ring"><g transform="rotate(-16 100 108)">
+    <ellipse cx="100" cy="108" rx="94" ry="56" fill="none" stroke="url(#lring)" stroke-width="10" stroke-linecap="butt" pathLength="100" stroke-dasharray="90.5 9.5" stroke-dashoffset="-3"/>
+    <ellipse cx="100" cy="108" rx="79" ry="43" fill="none" stroke="#3dba55" stroke-width="3.5" pathLength="100" stroke-dasharray="90.5 9.5" stroke-dashoffset="-3"/>
+  </g></g>
+  <g class="m-road">
+    <polygon points="91,40 109,40 168,178 32,178" fill="#0f1114"/>
+    <polygon points="91,40 109,40 168,178 32,178" fill="none" stroke="#f4f6f8" stroke-width="7" stroke-linejoin="round"/>
+    <g fill="#3dba55" class="m-dash">
+      <rect x="98.6" y="52" width="2.8" height="9" rx="1"/>
+      <rect x="97.6" y="72" width="4.8" height="15" rx="1.4"/>
+      <rect x="96.2" y="101" width="7.6" height="23" rx="1.8"/>
+      <rect x="94" y="140" width="12" height="32" rx="2.4"/>
+    </g>
+  </g></g><g transform="translate(214 54) skewX(-9)" class="wm"><path class="wm1" d="M10.404 24.14 7.7860000000000005 14.756Q7.718000000000001 14.62 7.6160000000000005 14.62H6.460000000000001Q6.29 14.62 6.29 14.79V24.072Q6.29 24.242 6.171 24.361Q6.0520000000000005 24.48 5.882000000000001 24.48H1.9040000000000001Q1.7340000000000002 24.48 1.6150000000000002 24.361Q1.496 24.242 1.496 24.072V1.0879999999999974Q1.496 0.9179999999999993 1.6150000000000002 0.7989999999999995Q1.7340000000000002 0.6799999999999997 1.9040000000000001 0.6799999999999997H8.772Q10.642000000000001 0.6799999999999997 12.104000000000001 1.5809999999999995Q13.566 2.4819999999999993 14.365000000000002 4.113999999999999Q15.164000000000001 5.745999999999999 15.164000000000001 7.853999999999999Q15.164000000000001 9.86 14.399000000000001 11.39Q13.634 12.92 12.274000000000001 13.77Q12.206000000000001 13.804 12.172 13.855Q12.138000000000002 13.905999999999999 12.172 13.974L15.3 24.004L15.334000000000001 24.14Q15.334000000000001 24.48 14.96 24.48H10.88Q10.506 24.48 10.404 24.14ZM6.29 4.963999999999999V10.777999999999999Q6.29 10.947999999999999 6.460000000000001 10.947999999999999H7.99Q9.044 10.947999999999999 9.707 10.114999999999998Q10.370000000000001 9.282 10.370000000000001 7.887999999999998Q10.370000000000001 6.460000000000001 9.707 5.627000000000001Q9.044 4.7940000000000005 7.99 4.7940000000000005H6.460000000000001Q6.29 4.7940000000000005 6.29 4.963999999999999ZM22.610000000000003 18.02V7.140000000000001Q22.610000000000003 4.079999999999998 24.480000000000004 2.243999999999998Q26.350000000000005 0.4079999999999977 29.478000000000005 0.4079999999999977Q32.60600000000001 0.4079999999999977 34.49300000000001 2.243999999999998Q36.38000000000001 4.079999999999998 36.38000000000001 7.140000000000001V18.02Q36.38000000000001 21.08 34.49300000000001 22.915999999999997Q32.60600000000001 24.752 29.478000000000005 24.752Q26.350000000000005 24.752 24.480000000000004 22.915999999999997Q22.610000000000003 21.08 22.610000000000003 18.02ZM31.586000000000006 18.224V6.936Q31.586000000000006 5.847999999999999 31.008000000000006 5.184999999999999Q30.430000000000007 4.5219999999999985 29.478000000000005 4.5219999999999985Q28.526000000000003 4.5219999999999985 27.965000000000003 5.184999999999999Q27.404000000000003 5.847999999999999 27.404000000000003 6.936V18.224Q27.404000000000003 19.312 27.965000000000003 19.975Q28.526000000000003 20.638 29.478000000000005 20.638Q30.430000000000007 20.638 31.008000000000006 19.975Q31.586000000000006 19.312 31.586000000000006 18.224ZM54.02600000000001 24.106 53.482000000000006 20.842Q53.482000000000006 20.672 53.278000000000006 20.672H48.96000000000001Q48.75600000000001 20.672 48.75600000000001 20.842L48.212 24.106Q48.178000000000004 24.48 47.77000000000001 24.48H43.79200000000001Q43.35000000000001 24.48 43.452000000000005 24.038L48.45 1.0539999999999985Q48.51800000000001 0.6799999999999997 48.89200000000001 0.6799999999999997H53.482000000000006Q53.85600000000001 0.6799999999999997 53.92400000000001 1.0539999999999985L58.888000000000005 24.038L58.92200000000001 24.174Q58.92200000000001 24.48 58.54800000000001 24.48H54.468Q54.06000000000001 24.48 54.02600000000001 24.106ZM49.572 16.966H52.632000000000005Q52.80200000000001 16.966 52.76800000000001 16.796L51.17000000000001 7.513999999999999Q51.13600000000001 7.411999999999999 51.06800000000001 7.411999999999999Q51.00000000000001 7.411999999999999 50.96600000000001 7.513999999999999L49.43600000000001 16.796Q49.43600000000001 16.966 49.572 16.966ZM66.3 24.072V1.0879999999999974Q66.3 0.9179999999999993 66.419 0.7989999999999995Q66.538 0.6799999999999997 66.708 0.6799999999999997H72.862Q75.956 0.6799999999999997 77.826 2.4819999999999993Q79.696 4.283999999999999 79.696 7.276V17.884Q79.696 20.876 77.826 22.678Q75.956 24.48 72.862 24.48H66.708Q66.538 24.48 66.419 24.361Q66.3 24.242 66.3 24.072ZM71.26400000000001 20.366 72.794 20.332Q73.712 20.298000000000002 74.28999999999999 19.55Q74.868 18.802 74.902 17.578V7.582000000000001Q74.902 6.289999999999999 74.32400000000001 5.542Q73.74600000000001 4.7940000000000005 72.76 4.7940000000000005H71.26400000000001Q71.09400000000001 4.7940000000000005 71.09400000000001 4.963999999999999V20.195999999999998Q71.09400000000001 20.366 71.26400000000001 20.366ZM113.76400000000001 1.0879999999999974V4.385999999999999Q113.76400000000001 4.555999999999997 113.64500000000001 4.674999999999999Q113.52600000000001 4.7940000000000005 113.35600000000001 4.7940000000000005H109.10600000000001Q108.936 4.7940000000000005 108.936 4.963999999999999V24.072Q108.936 24.242 108.81700000000001 24.361Q108.69800000000001 24.48 108.528 24.48H104.55000000000001Q104.38000000000001 24.48 104.26100000000001 24.361Q104.14200000000001 24.242 104.14200000000001 24.072V4.963999999999999Q104.14200000000001 4.7940000000000005 103.97200000000001 4.7940000000000005H99.89200000000001Q99.72200000000001 4.7940000000000005 99.60300000000001 4.674999999999999Q99.48400000000001 4.555999999999997 99.48400000000001 4.385999999999999V1.0879999999999974Q99.48400000000001 0.9179999999999993 99.60300000000001 0.7989999999999995Q99.72200000000001 0.6799999999999997 99.89200000000001 0.6799999999999997H113.35600000000001Q113.52600000000001 0.6799999999999997 113.64500000000001 0.7989999999999995Q113.76400000000001 0.9179999999999993 113.76400000000001 1.0879999999999974ZM121.17600000000002 18.02V7.140000000000001Q121.17600000000002 4.079999999999998 123.04600000000002 2.243999999999998Q124.91600000000001 0.4079999999999977 128.044 0.4079999999999977Q131.17200000000003 0.4079999999999977 133.05900000000003 2.243999999999998Q134.94600000000003 4.079999999999998 134.94600000000003 7.140000000000001V18.02Q134.94600000000003 21.08 133.05900000000003 22.915999999999997Q131.17200000000003 24.752 128.044 24.752Q124.91600000000001 24.752 123.04600000000002 22.915999999999997Q121.17600000000002 21.08 121.17600000000002 18.02ZM130.15200000000002 18.224V6.936Q130.15200000000002 5.847999999999999 129.574 5.184999999999999Q128.996 4.5219999999999985 128.044 4.5219999999999985Q127.09200000000001 4.5219999999999985 126.531 5.184999999999999Q125.97000000000001 5.847999999999999 125.97000000000001 6.936V18.224Q125.97000000000001 19.312 126.531 19.975Q127.09200000000001 20.638 128.044 20.638Q128.996 20.638 129.574 19.975Q130.15200000000002 19.312 130.15200000000002 18.224ZM168.87800000000001 1.0879999999999974V4.385999999999999Q168.87800000000001 4.555999999999997 168.75900000000001 4.674999999999999Q168.64000000000001 4.7940000000000005 168.47 4.7940000000000005H164.22Q164.05 4.7940000000000005 164.05 4.963999999999999V24.072Q164.05 24.242 163.931 24.361Q163.812 24.48 163.64200000000002 24.48H159.66400000000002Q159.494 24.48 159.375 24.361Q159.256 24.242 159.256 24.072V4.963999999999999Q159.256 4.7940000000000005 159.086 4.7940000000000005H155.006Q154.836 4.7940000000000005 154.717 4.674999999999999Q154.598 4.555999999999997 154.598 4.385999999999999V1.0879999999999974Q154.598 0.9179999999999993 154.717 0.7989999999999995Q154.836 0.6799999999999997 155.006 0.6799999999999997H168.47Q168.64000000000001 0.6799999999999997 168.75900000000001 0.7989999999999995Q168.87800000000001 0.9179999999999993 168.87800000000001 1.0879999999999974ZM185.572 0.6799999999999997H189.55Q189.72000000000003 0.6799999999999997 189.83900000000003 0.7989999999999995Q189.95800000000003 0.9179999999999993 189.95800000000003 1.0879999999999974V24.072Q189.95800000000003 24.242 189.83900000000003 24.361Q189.72000000000003 24.48 189.55 24.48H185.572Q185.40200000000002 24.48 185.28300000000002 24.361Q185.16400000000002 24.242 185.16400000000002 24.072V14.79Q185.16400000000002 14.62 184.99400000000003 14.62H181.59400000000002Q181.424 14.62 181.424 14.79V24.072Q181.424 24.242 181.305 24.361Q181.186 24.48 181.01600000000002 24.48H177.038Q176.86800000000002 24.48 176.74900000000002 24.361Q176.63000000000002 24.242 176.63000000000002 24.072V1.0879999999999974Q176.63000000000002 0.9179999999999993 176.74900000000002 0.7989999999999995Q176.86800000000002 0.6799999999999997 177.038 0.6799999999999997H181.01600000000002Q181.186 0.6799999999999997 181.305 0.7989999999999995Q181.424 0.9179999999999993 181.424 1.0879999999999974V10.335999999999999Q181.424 10.506 181.59400000000002 10.506H184.99400000000003Q185.16400000000002 10.506 185.16400000000002 10.335999999999999V1.0879999999999974Q185.16400000000002 0.9179999999999993 185.28300000000002 0.7989999999999995Q185.40200000000002 0.6799999999999997 185.572 0.6799999999999997ZM210.46 4.7940000000000005H203.354Q203.184 4.7940000000000005 203.184 4.963999999999999V10.335999999999999Q203.184 10.506 203.354 10.506H207.434Q207.604 10.506 207.723 10.625Q207.842 10.744 207.842 10.914V14.212Q207.842 14.382 207.723 14.501Q207.604 14.62 207.434 14.62H203.354Q203.184 14.62 203.184 14.79V20.195999999999998Q203.184 20.366 203.354 20.366H210.46Q210.63 20.366 210.749 20.485Q210.868 20.604 210.868 20.774V24.072Q210.868 24.242 210.749 24.361Q210.63 24.48 210.46 24.48H198.798Q198.62800000000001 24.48 198.50900000000001 24.361Q198.39000000000001 24.242 198.39000000000001 24.072V1.0879999999999974Q198.39000000000001 0.9179999999999993 198.50900000000001 0.7989999999999995Q198.62800000000001 0.6799999999999997 198.798 0.6799999999999997H210.46Q210.63 0.6799999999999997 210.749 0.7989999999999995Q210.868 0.9179999999999993 210.868 1.0879999999999974V4.385999999999999Q210.868 4.555999999999997 210.749 4.674999999999999Q210.63 4.7940000000000005 210.46 4.7940000000000005Z" fill="#3dba55"/><g transform="translate(0 36.04)"><path class="wm2" d="M33.8 73.73599999999999 32.135999999999996 63.751999999999995Q32.135999999999996 63.232 31.511999999999997 63.232H18.304Q17.68 63.232 17.68 63.751999999999995L16.016 73.73599999999999Q15.911999999999999 74.88 14.664 74.88H2.496Q1.144 74.88 1.456 73.52799999999999L16.744 3.2240000000000038Q16.951999999999998 2.0799999999999983 18.096 2.0799999999999983H32.135999999999996Q33.28 2.0799999999999983 33.488 3.2240000000000038L48.672 73.52799999999999L48.775999999999996 73.94399999999999Q48.775999999999996 74.88 47.632 74.88H35.152Q33.903999999999996 74.88 33.8 73.73599999999999ZM20.176 51.896H29.535999999999998Q30.055999999999997 51.896 29.951999999999998 51.376L25.064 22.983999999999995Q24.959999999999997 22.671999999999997 24.752 22.671999999999997Q24.544 22.671999999999997 24.439999999999998 22.983999999999995L19.759999999999998 51.376Q19.759999999999998 51.896 20.176 51.896ZM90.792 2.0799999999999983H102.856Q103.376 2.0799999999999983 103.74 2.4439999999999955Q104.10399999999998 2.8079999999999927 104.10399999999998 3.328000000000003V73.63199999999999Q104.10399999999998 74.152 103.74 74.51599999999999Q103.376 74.88 102.856 74.88H90.68799999999999Q90.168 74.88 89.804 74.51599999999999Q89.44 74.152 89.44 73.63199999999999V26.936Q89.44 26.519999999999996 89.232 26.519999999999996Q89.024 26.519999999999996 88.816 26.832L80.704 41.184Q80.184 42.016 79.872 42.016Q79.56 42.016 79.03999999999999 41.184L70.928 26.832Q70.72 26.519999999999996 70.512 26.519999999999996Q70.304 26.519999999999996 70.304 26.936V73.63199999999999Q70.304 74.152 69.94 74.51599999999999Q69.576 74.88 69.056 74.88H56.888Q56.367999999999995 74.88 56.004 74.51599999999999Q55.64 74.152 55.64 73.63199999999999V3.328000000000003Q55.64 2.8079999999999927 56.004 2.4439999999999955Q56.367999999999995 2.0799999999999983 56.888 2.0799999999999983H68.848Q69.888 2.0799999999999983 70.408 2.911999999999992L79.664 19.448Q79.976 19.863999999999997 80.288 19.448L89.232 2.911999999999992Q89.648 2.0799999999999983 90.792 2.0799999999999983ZM151.11199999999997 14.664000000000001H129.37599999999998Q128.856 14.664000000000001 128.856 15.183999999999997V31.616Q128.856 32.135999999999996 129.37599999999998 32.135999999999996H141.856Q142.37599999999998 32.135999999999996 142.73999999999998 32.5Q143.10399999999998 32.864 143.10399999999998 33.384V43.471999999999994Q143.10399999999998 43.992 142.73999999999998 44.355999999999995Q142.37599999999998 44.72 141.856 44.72H129.37599999999998Q128.856 44.72 128.856 45.239999999999995V61.775999999999996Q128.856 62.29599999999999 129.37599999999998 62.29599999999999H151.11199999999997Q151.63199999999998 62.29599999999999 151.99599999999998 62.66Q152.35999999999999 63.023999999999994 152.35999999999999 63.544V73.63199999999999Q152.35999999999999 74.152 151.99599999999998 74.51599999999999Q151.63199999999998 74.88 151.11199999999997 74.88H115.43999999999998Q114.91999999999999 74.88 114.55599999999998 74.51599999999999Q114.19199999999998 74.152 114.19199999999998 73.63199999999999V3.328000000000003Q114.19199999999998 2.8079999999999927 114.55599999999998 2.4439999999999955Q114.91999999999999 2.0799999999999983 115.43999999999998 2.0799999999999983H151.11199999999997Q151.63199999999998 2.0799999999999983 151.99599999999998 2.4439999999999955Q152.35999999999999 2.8079999999999927 152.35999999999999 3.328000000000003V13.415999999999997Q152.35999999999999 13.936 151.99599999999998 14.3Q151.63199999999998 14.664000000000001 151.11199999999997 14.664000000000001ZM188.24 73.83999999999999 180.232 45.135999999999996Q180.024 44.72 179.712 44.72H176.176Q175.656 44.72 175.656 45.239999999999995V73.63199999999999Q175.656 74.152 175.292 74.51599999999999Q174.928 74.88 174.408 74.88H162.24Q161.72 74.88 161.356 74.51599999999999Q160.992 74.152 160.992 73.63199999999999V3.328000000000003Q160.992 2.8079999999999927 161.356 2.4439999999999955Q161.72 2.0799999999999983 162.24 2.0799999999999983H183.248Q188.968 2.0799999999999983 193.44 4.8359999999999985Q197.91199999999998 7.591999999999999 200.356 12.584Q202.8 17.576 202.8 24.024Q202.8 30.159999999999997 200.46 34.839999999999996Q198.12 39.519999999999996 193.95999999999998 42.12Q193.752 42.224 193.648 42.379999999999995Q193.54399999999998 42.535999999999994 193.648 42.744L203.216 73.42399999999999L203.32 73.83999999999999Q203.32 74.88 202.176 74.88H189.696Q188.552 74.88 188.24 73.83999999999999ZM175.656 15.183999999999997V32.967999999999996Q175.656 33.488 176.176 33.488H180.856Q184.07999999999998 33.488 186.108 30.939999999999998Q188.136 28.391999999999996 188.136 24.128Q188.136 19.759999999999998 186.108 17.212Q184.07999999999998 14.664000000000001 180.856 14.664000000000001H176.176Q175.656 14.664000000000001 175.656 15.183999999999997ZM211.224 73.63199999999999V3.328000000000003Q211.224 2.8079999999999927 211.588 2.4439999999999955Q211.952 2.0799999999999983 212.472 2.0799999999999983H224.64Q225.16 2.0799999999999983 225.524 2.4439999999999955Q225.888 2.8079999999999927 225.888 3.328000000000003V73.63199999999999Q225.888 74.152 225.524 74.51599999999999Q225.16 74.88 224.64 74.88H212.472Q211.952 74.88 211.588 74.51599999999999Q211.224 74.152 211.224 73.63199999999999ZM235.352 55.224V21.528Q235.352 12.271999999999998 241.01999999999998 6.760000000000002Q246.688 1.2480000000000047 256.048 1.2480000000000047Q265.512 1.2480000000000047 271.18 6.760000000000002Q276.848 12.271999999999998 276.848 21.528V22.671999999999997Q276.848 23.192 276.48400000000004 23.555999999999997Q276.12 23.919999999999995 275.6 23.919999999999995L263.432 24.439999999999998Q262.184 24.439999999999998 262.184 23.296V20.592Q262.184 17.576 260.52 15.704Q258.856 13.832 256.048 13.832Q253.344 13.832 251.68 15.704Q250.016 17.576 250.016 20.592V56.471999999999994Q250.016 59.488 251.68 61.308Q253.344 63.128 256.048 63.128Q258.856 63.128 260.52 61.308Q262.184 59.488 262.184 56.471999999999994V53.664Q262.184 53.14399999999999 262.548 52.779999999999994Q262.912 52.416 263.432 52.416L275.6 52.93599999999999Q276.12 52.93599999999999 276.48400000000004 53.3Q276.848 53.664 276.848 54.184V55.224Q276.848 64.584 271.12800000000004 70.148Q265.408 75.71199999999999 256.048 75.71199999999999Q246.688 75.71199999999999 241.01999999999998 70.148Q235.352 64.584 235.352 55.224ZM315.12 73.73599999999999 313.456 63.751999999999995Q313.456 63.232 312.832 63.232H299.62399999999997Q299.0 63.232 299.0 63.751999999999995L297.336 73.73599999999999Q297.23199999999997 74.88 295.984 74.88H283.816Q282.464 74.88 282.776 73.52799999999999L298.06399999999996 3.2240000000000038Q298.272 2.0799999999999983 299.416 2.0799999999999983H313.456Q314.6 2.0799999999999983 314.808 3.2240000000000038L329.99199999999996 73.52799999999999L330.096 73.94399999999999Q330.096 74.88 328.952 74.88H316.472Q315.224 74.88 315.12 73.73599999999999ZM301.496 51.896H310.856Q311.376 51.896 311.272 51.376L306.384 22.983999999999995Q306.28 22.671999999999997 306.072 22.671999999999997Q305.864 22.671999999999997 305.76 22.983999999999995L301.08 51.376Q301.08 51.896 301.496 51.896ZM335.816 56.67999999999999V53.664Q335.816 53.14399999999999 336.17999999999995 52.779999999999994Q336.544 52.416 337.06399999999996 52.416H349.02399999999994Q349.544 52.416 349.908 52.779999999999994Q350.272 53.14399999999999 350.272 53.664V55.952Q350.272 59.175999999999995 351.936 61.152Q353.59999999999997 63.128 356.09599999999995 63.128Q358.592 63.128 360.256 61.256Q361.91999999999996 59.384 361.91999999999996 56.367999999999995Q361.91999999999996 53.248 359.84 51.012Q357.76 48.775999999999996 351.72799999999995 44.408Q346.52799999999996 40.663999999999994 343.304 37.751999999999995Q340.08 34.839999999999996 337.792 30.575999999999997Q335.50399999999996 26.311999999999998 335.50399999999996 20.695999999999998Q335.50399999999996 11.856000000000002 341.01599999999996 6.552000000000003Q346.52799999999996 1.2480000000000047 355.57599999999996 1.2480000000000047Q364.72799999999995 1.2480000000000047 370.292 6.760000000000002Q375.856 12.271999999999998 375.856 21.216V23.711999999999996Q375.856 24.232 375.49199999999996 24.596Q375.128 24.96 374.60799999999995 24.96H362.64799999999997Q362.128 24.96 361.764 24.596Q361.4 24.232 361.4 23.711999999999996V20.903999999999996Q361.4 17.68 359.788 15.756Q358.176 13.832 355.57599999999996 13.832Q353.08 13.832 351.52 15.652000000000001Q349.96 17.472 349.96 20.695999999999998Q349.96 23.815999999999995 351.936 26.207999999999995Q353.912 28.599999999999994 359.736 32.864Q366.18399999999997 37.647999999999996 369.46 40.611999999999995Q372.736 43.57599999999999 374.556 47.163999999999994Q376.376 50.751999999999995 376.376 55.744Q376.376 64.896 370.76 70.304Q365.14399999999995 75.71199999999999 355.99199999999996 75.71199999999999Q349.96 75.71199999999999 345.384 73.32Q340.808 70.928 338.312 66.612Q335.816 62.29599999999999 335.816 56.67999999999999Z" fill="#f4f6f8"/></g></g></svg>
 
-<!-- desktop: fixed sidebar -->
-<aside class="side" aria-label="Site">
-  <a class="logo" href="./" aria-label="Road to the Americas home"><img src="assets/img/logo.png" width="190" height="95" alt="Road to the Americas"></a>
-  <nav class="nav" aria-label="Main">
-    <a class="nav-item" href="#play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4m0 0h11l-2 4 2 4H5"/></svg>Play</a>
-    <p class="nav-group">Game</p>
-    <a class="nav-item" href="#disciplines"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2"/><path d="M12 14v7M10.2 11L3.5 9M13.8 11l6.7-2"/></svg>Disciplines</a>
-    <a class="nav-item" href="#setup"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>Race setup</a>
-    <a class="nav-item" href="#screens"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M4 18l5-5 4 4 3-3 4 4"/></svg>Screens</a>
-    <p class="nav-group">Guide</p>
-    <a class="nav-item" href="#controls"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="8" width="19" height="9" rx="4"/><path d="M7 10.5v4M5 12.5h4"/><circle cx="16" cy="11.5" r="1"/><circle cx="18.5" cy="14" r="1"/></svg>Controls</a>
-    <a class="nav-item" href="#updates"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14M5 12h14M5 18h9"/></svg>Updates</a>
-  </nav>
-  <div class="side-foot">
-    <div class="tip"><strong>On a phone or tablet?</strong><span>Tap Share, then Add to Home Screen, to play full screen.</span></div>
-    <p class="build"><i aria-hidden="true"></i>Build 2026-11-19</p>
+      <div class="boot-bar" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="boot-fill"></i></div>
+      <div class="boot-label" id="boot-label">Warming up the engines</div>
+      <button class="boot-start" id="boot-start" type="button" hidden>Press to start</button>
+    </div>
+    <p class="boot-foot">Fan-made game. Not affiliated with or endorsed by NASCAR or any speedway.</p>
   </div>
-</aside>
-
-<!-- phone and tablet: top bar and bottom tabs -->
-<header class="mobile-bar">
-  <a class="logo" href="./" aria-label="Road to the Americas home"><img src="assets/img/logo.png" width="120" height="60" alt="Road to the Americas"></a>
-  <a class="btn-play small" href="play/">Play free</a>
-</header>
-<nav class="tabbar" aria-label="Sections">
-  <a class="tab" href="#play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4m0 0h11l-2 4 2 4H5"/></svg>Play</a>
-  <a class="tab" href="#disciplines"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2"/><path d="M12 14v7M10.2 11L3.5 9M13.8 11l6.7-2"/></svg>Disciplines</a>
-  <a class="tab" href="#setup"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>Setup</a>
-  <a class="tab" href="#screens"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M4 18l5-5 4 4 3-3 4 4"/></svg>Screens</a>
-  <a class="tab" href="#controls"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="8" width="19" height="9" rx="4"/><path d="M7 10.5v4M5 12.5h4"/><circle cx="16" cy="11.5" r="1"/><circle cx="18.5" cy="14" r="1"/></svg>Controls</a>
-  <a class="tab" href="#updates"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14M5 12h14M5 18h9"/></svg>Updates</a>
-</nav>
-
-<main class="main" id="main">
-  <section class="page" id="play" aria-labelledby="play-title">
-    <header class="page-head">
-      <h1 id="play-title">Play</h1>
-      <p>Free motorsport racing in your browser. Stock cars at Daytona are playable now.</p>
-    </header>
-
-    <div class="play-grid">
-      <div class="cards">
-        <article class="card hero-card" aria-labelledby="quick-title">
-          <img class="card-img" src="assets/img/hero.jpg" width="1920" height="1080" alt="">
-          <div class="chips"><span class="chip chip-blue">Stock cars</span><span class="chip">Daytona oval</span><span class="chip">Clear to thunderstorm</span></div>
-          <div class="timing" aria-label="Session summary">
-            <div class="timing-head">Session</div>
-            <dl>
-              <div><dt>Mode</dt><dd>Quick race</dd></div>
-              <div><dt>Laps</dt><dd>3 to 20</dd></div>
-              <div><dt>Field</dt><dd>Up to 40</dd></div>
-              <div><dt>Time</dt><dd>Dawn to night</dd></div>
-            </dl>
-          </div>
-          <div class="hero-text">
-            <h2 id="quick-title" class="big-title">Quick race</h2>
-            <p class="sub">Race the AI, start to flag</p>
-            <a class="btn-play" href="play/">Play free</a>
-          </div>
-          <div class="dash" aria-hidden="true">
-            <div class="revs" id="revs">
-              <i class="g on"></i><i class="g on"></i><i class="g on"></i><i class="g on"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i>
-              <i class="g"></i><i class="g"></i><i class="y"></i><i class="y"></i><i class="y"></i><i class="y"></i><i class="y"></i><i class="r"></i><i class="r"></i><i class="r"></i>
-            </div>
-            <div class="dash-row">
-              <div class="speed"><span class="num" id="spd">0</span><span class="unit">mph</span></div>
-              <div class="gear"><span class="num" id="gear">N</span></div>
-              <div class="delta"><span class="unit">delta</span><i></i></div>
-            </div>
-          </div>
-        </article>
-
-        <div class="mini-cards">
-          <article class="card mini rain">
-            <img class="card-img" src="assets/img/rain.jpg" width="1280" height="720" alt="" loading="lazy">
-            <span class="chip chip-blue">Weather</span>
-            <div class="mini-text"><h3 class="big-title">Rain and storms</h3><p>Clear, overcast, rain or thunderstorm. A wet track means less grip.</p></div>
-          </article>
-          <article class="card mini night">
-            <img class="card-img" src="assets/img/night.jpg" width="1280" height="720" alt="" loading="lazy">
-            <span class="chip chip-purple">Time of day</span>
-            <div class="mini-text"><h3 class="big-title">Night racing</h3><p>Start at night, or turn on the day and night cycle.</p></div>
-          </article>
-          <article class="card mini damage">
-            <img class="card-img" src="assets/img/damage.jpg" width="1280" height="720" alt="" loading="lazy">
-            <span class="chip chip-red">Damage</span>
-            <div class="mini-text"><h3 class="big-title">Crash damage</h3><p>Bumpers dent and fall off. Lose a wheel and your race ends.</p></div>
-          </article>
-        </div>
-      </div>
-
-      <aside class="qr" id="setup" aria-labelledby="qr-title">
-        <div class="qr-head"><span class="qr-tag">Stock cars</span><h2 id="qr-title" class="big-title">Quick race</h2></div>
-        <div class="qr-scroll">
-          <div class="stats">
-            <div class="stat"><span class="k">Field</span><span class="v">Up to 40</span></div>
-            <div class="stat"><span class="k">Laps</span><span class="v">3 to 20</span></div>
-            <div class="stat"><span class="k">AI levels</span>
-              <span class="minis" aria-label="Four AI levels"><b style="--c:#e0242f">R</b><b style="--c:#f08a24">P</b><b style="--c:#2fbf5b">V</b><b style="--c:#2f7bff">L</b></span>
-            </div>
-          </div>
-          <p class="qr-hint">These Quick Race settings apply to the stock car mode. The highlighted choice is what a first-time player starts with.</p>
-
-          <div class="opt">
-            <h3>Laps</h3>
-            <ul class="pills">
-              <li class="pill is-default">3<span class="tag">default</span></li><li class="pill">5</li><li class="pill">10</li><li class="pill">20</li>
-            </ul>
-          </div>
-          <div class="opt">
-            <h3>AI drivers</h3>
-            <ul class="pills">
-              <li class="pill lic" style="--c:#e0242f"><b>R</b>Rookie</li>
-              <li class="pill lic" style="--c:#f08a24"><b>P</b>Pro</li>
-              <li class="pill lic is-default" style="--c:#2fbf5b"><b>V</b>Veteran<span class="tag">default</span></li>
-              <li class="pill lic" style="--c:#2f7bff"><b>L</b>Legend</li>
-            </ul>
-            <p class="opt-note">Legend is the toughest and keeps pace with you.</p>
-          </div>
-          <div class="opt">
-            <h3>Field size</h3>
-            <ul class="pills">
-              <li class="pill">0</li><li class="pill is-default">8<span class="tag">default</span></li><li class="pill">16</li><li class="pill">24</li><li class="pill">32</li><li class="pill">40</li>
-            </ul>
-            <p class="opt-note">Cars on track besides you. The desktop game starts with 16.</p>
-          </div>
-          <div class="opt">
-            <h3>Weather</h3>
-            <ul class="pills">
-              <li class="pill is-default">Clear<span class="tag">default</span></li><li class="pill">Overcast</li><li class="pill">Rain</li><li class="pill">Thunderstorm</li>
-            </ul>
-            <p class="opt-note">Rain makes the track slick, and your spotter warns you.</p>
-          </div>
-          <div class="opt">
-            <h3>Time of day</h3>
-            <ul class="pills">
-              <li class="pill">Dawn</li><li class="pill">Morning</li><li class="pill is-default">Noon<span class="tag">default</span></li><li class="pill">Afternoon</li><li class="pill">Sunset</li><li class="pill">Night</li>
-            </ul>
-          </div>
-          <div class="opt">
-            <h3>Day and night cycle</h3>
-            <ul class="pills">
-              <li class="pill is-default">Off<span class="tag">default</span></li><li class="pill">On</li>
-            </ul>
-            <p class="opt-note">Watch the light change during a long race.</p>
-          </div>
-          <div class="opt">
-            <h3>Damage</h3>
-            <ul class="pills">
-              <li class="pill">Arcade</li><li class="pill is-default">Realistic<span class="tag">default</span></li><li class="pill">Severe</li>
-            </ul>
-            <p class="opt-note">Hard hits dent the bumper, bumpers can hang or fall off, and losing a wheel ends your race.</p>
-          </div>
-        </div>
-        <div class="qr-foot">
-          <div class="first-load"><span class="k">First load</span><span class="v">About 100 MB</span><span class="n">Then it is saved on your device. On a phone, hold it sideways.</span></div>
-          <a class="btn-play" href="play/">Play free</a>
-        </div>
-      </aside>
-    </div>
-  </section>
-
-  <section class="page" id="disciplines" aria-labelledby="disc-title">
-    <header class="page-head"><h2 id="disc-title" class="page-title">Disciplines</h2><p>What you can race now, and what comes next.</p></header>
-    <ul class="classes">
-      <li class="class is-selected">
-        <span class="class-thumb" aria-hidden="true"></span>
-        <span class="class-body"><span class="class-name">Stock cars</span><span class="class-sub">Daytona oval</span></span>
-        <span class="class-badge now">Playable now</span>
-      </li>
-      <li class="class is-planned" aria-disabled="true">
-        <span class="class-thumb ghost" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 21V4m0 0h11l-2 4 2 4H5"/></svg></span>
-        <span class="class-body"><span class="class-name">More disciplines</span><span class="class-sub">The aim is every form of motorsport except bikes, added one at a time.</span></span>
-        <span class="class-badge soon">Planned</span>
-      </li>
-    </ul>
-  </section>
-
-  <section class="page" id="screens" aria-labelledby="screens-title">
-    <header class="page-head"><h2 id="screens-title" class="page-title">Screens</h2><p>Screenshots from the current build.</p></header>
-    <div class="shots">
-      <figure class="card shot s3"><img class="card-img" src="assets/img/race.jpg" width="1280" height="720" alt="Daytime race with the speedometer, shifter and track map on screen" loading="lazy"><figcaption><span class="big-title">Racing</span><span>Speedometer, shifter and track map.</span></figcaption></figure>
-      <figure class="card shot s3"><img class="card-img" src="assets/img/storm.jpg" width="1280" height="720" alt="Racing in a dark thunderstorm with rain on the track" loading="lazy"><figcaption><span class="big-title">Thunderstorm</span><span>Night racing in heavy rain.</span></figcaption></figure>
-      <figure class="card shot s2"><img class="card-img" src="assets/img/grid.jpg" width="1280" height="592" alt="Overhead view of a full grid of colored stock cars lined up on the Daytona front straight" loading="lazy"><figcaption><span class="big-title">Starting grid</span><span>Before the green flag.</span></figcaption></figure>
-      <figure class="card shot s2"><img class="card-img pos-left" src="assets/img/setup.jpg" width="1280" height="720" alt="Race setup screen with laps, difficulty, weather and damage options" loading="lazy"><figcaption><span class="big-title">Race setup</span><span>Rain and night selected.</span></figcaption></figure>
-      <figure class="card shot s2"><img class="card-img pos-left" src="assets/img/menu.jpg" width="1280" height="720" alt="Main menu with Play, Garage, Settings and Credits over a view of the car" loading="lazy"><figcaption><span class="big-title">Main menu</span><span>Play, Garage, Settings.</span></figcaption></figure>
-    </div>
-  </section>
-
-  <section class="page" id="controls" aria-labelledby="controls-title">
-    <header class="page-head"><h2 id="controls-title" class="page-title">Controls</h2><p>Keyboard, game controller or touch screen.</p></header>
-    <div class="controls">
-      <div class="card panel">
-        <div class="panel-head">Keyboard</div>
-        <table class="keys">
-          <caption class="sr">Keyboard controls</caption>
-          <thead class="sr"><tr><th scope="col">Action</th><th scope="col">Keys</th></tr></thead>
-          <tbody>
-            <tr><th scope="row">Gas</th><td><span class="cap">W</span><span class="cap">&uarr;</span></td></tr>
-            <tr><th scope="row">Brake</th><td><span class="cap">S</span><span class="cap">&darr;</span></td></tr>
-            <tr><th scope="row">Steer</th><td><span class="cap">A</span><span class="cap">D</span><span class="cap">&larr;</span><span class="cap">&rarr;</span></td></tr>
-            <tr><th scope="row">Shift down, shift up</th><td><span class="cap">Q</span><span class="cap">E</span></td></tr>
-            <tr><th scope="row">Change camera</th><td><span class="cap">C</span></td></tr>
-            <tr><th scope="row">Show or hide the data card</th><td><span class="cap">B</span></td></tr>
-            <tr><th scope="row">Pit service</th><td><span class="cap">P</span></td></tr>
-            <tr><th scope="row">Put the car back on track</th><td><span class="cap">R</span></td></tr>
-            <tr><th scope="row">Pause</th><td><span class="cap">Esc</span></td></tr>
-          </tbody>
-        </table>
-        <p class="note">A game controller also works: left stick steers, right trigger is gas, left trigger is brake.</p>
-      </div>
-      <div class="card panel">
-        <div class="panel-head">Touch screen</div>
-        <div class="touch">
-          <svg class="phone" viewBox="0 0 520 260" role="img" aria-label="Touch layout: steering strip on the left, brake and gas pedals on the right, shift buttons above them, and pause, camera, pit and data buttons down the right edge">
-            <rect x="2" y="2" width="516" height="256" rx="26" fill="#0e1013" stroke="#2a2e35" stroke-width="4"/>
-            <rect x="14" y="14" width="492" height="232" rx="14" fill="#1b1e23"/>
-            <rect x="26" y="160" width="170" height="74" fill="#262a31" stroke="#3dba55" stroke-width="2"/>
-            <text x="111" y="204" text-anchor="middle" font-size="22" fill="#eef0f2">STEER</text>
-            <rect x="26" y="118" width="58" height="28" fill="#262a31"/>
-            <text x="55" y="138" text-anchor="middle" font-size="16" fill="#eef0f2">RESET</text>
-            <rect x="318" y="168" width="78" height="66" fill="#262a31"/>
-            <text x="357" y="208" text-anchor="middle" font-size="22" fill="#eef0f2">BRAKE</text>
-            <rect x="408" y="150" width="88" height="84" fill="#3dba55"/>
-            <text x="452" y="199" text-anchor="middle" font-size="26" fill="#0e1013">GAS</text>
-            <rect x="318" y="122" width="38" height="32" fill="#262a31"/><text x="337" y="145" text-anchor="middle" font-size="22" fill="#eef0f2">+</text>
-            <rect x="362" y="122" width="38" height="32" fill="#262a31"/><text x="381" y="145" text-anchor="middle" font-size="22" fill="#eef0f2">&minus;</text>
-            <rect x="458" y="26" width="38" height="28" fill="#262a31"/><text x="477" y="46" text-anchor="middle" font-size="15" fill="#eef0f2">II</text>
-            <rect x="458" y="60" width="38" height="28" fill="#262a31"/><text x="477" y="80" text-anchor="middle" font-size="13" fill="#eef0f2">CAM</text>
-            <rect x="458" y="94" width="38" height="28" fill="#262a31"/><text x="477" y="114" text-anchor="middle" font-size="13" fill="#eef0f2">PIT</text>
-            <rect x="458" y="128" width="38" height="18" fill="#262a31"/><text x="477" y="142" text-anchor="middle" font-size="11" fill="#eef0f2">DATA</text>
-          </svg>
-          <p>Slide your left thumb along the strip to steer. Right thumb handles gas and brake, and the + and &minus; buttons shift gears. The controls appear the first time you touch the screen.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="page" id="updates" aria-labelledby="updates-title">
-    <header class="page-head"><h2 id="updates-title" class="page-title">Updates</h2><p>What changed, newest first.</p></header>
-    <div class="card panel">
-      <ol class="log">
-        <li>
-          <time datetime="2026-11-19">Nov 19, 2026</time>
-          <div>
-            <h3>Play in your browser</h3>
-            <ul>
-            <li>The game now runs on this site on phones, tablets and computers.</li>
-            <li>Touch controls: steering strip, gas, brake, shifting, pause, camera, pit and data buttons.</li>
-            <li>On the web the game adjusts its 3D resolution during a race to hold a smooth frame rate.</li>
-            <li>Smaller first download, and the game is saved on your device after the first play.</li>
-            </ul>
-          </div>
-        </li>
-        <li>
-          <time datetime="2026-11-17">Nov 17, 2026</time>
-          <div>
-            <h3>Weather, damage and a new look</h3>
-            <ul>
-            <li>Weather: clear, overcast, rain and thunderstorm with lightning, plus a day and night cycle.</li>
-            <li>Quick Race setup: laps, AI difficulty, field size, weather, time of day and damage level.</li>
-            <li>Crash damage: bumpers dent, hang and fall off, wheels can break away, and losing a wheel retires you from the race.</li>
-            <li>Faster, more competitive AI with four skill levels.</li>
-            <li>New main menu, pause menu, launch intro and broadcast-style race HUD.</li>
-            <li>Spotter calls for the green flag, traffic, rain and wheel loss.</li>
-            </ul>
-          </div>
-        </li>
-      </ol>
-    </div>
-  </section>
-
-  <footer class="site-footer">
-    <p><strong>Fan-made game.</strong> Not affiliated with or endorsed by NASCAR or Daytona International Speedway. Your settings are saved in this browser only.</p>
-    <p><strong>Credits.</strong> Menus and HUD use the Barlow Condensed typeface (SIL Open Font License). Asphalt and grass textures are CC0 sets from Poly Haven. Trackside ambience: &ldquo;Nascar-TMS-1998&rdquo; by FreqMan on Freesound, licensed CC BY 4.0. The spotter&rsquo;s calls are synthetic voice.</p>
-    <p class="build-line">Build 2026-11-19</p>
-  </footer>
-</main>
-
-<script src="site.js"></script>
+</div>
+<noscript>Road to the Americas needs JavaScript. Please turn it on and reload.</noscript>
 </body>
 </html>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="Road to the Americas">
+  <defs>
+    <linearGradient id="mring" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#aab2bb"/></linearGradient>
+    <radialGradient id="msun" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffe27a"/><stop offset="1" stop-color="#f4c20d"/></radialGradient>
+  </defs>
+  <g class="m-sun"><circle cx="100" cy="40" r="15" fill="url(#msun)"/></g>
+  <g class="m-ring"><g transform="rotate(-16 100 108)">
+    <ellipse cx="100" cy="108" rx="94" ry="56" fill="none" stroke="url(#mring)" stroke-width="10" stroke-linecap="butt" pathLength="100" stroke-dasharray="90.5 9.5" stroke-dashoffset="-3"/>
+    <ellipse cx="100" cy="108" rx="79" ry="43" fill="none" stroke="#3dba55" stroke-width="3.5" pathLength="100" stroke-dasharray="90.5 9.5" stroke-dashoffset="-3"/>
+  </g></g>
+  <g class="m-road">
+    <polygon points="91,40 109,40 168,178 32,178" fill="#0f1114"/>
+    <polygon points="91,40 109,40 168,178 32,178" fill="none" stroke="#f4f6f8" stroke-width="7" stroke-linejoin="round"/>
+    <g fill="#3dba55" class="m-dash">
+      <rect x="98.6" y="52" width="2.8" height="9" rx="1"/>
+      <rect x="97.6" y="72" width="4.8" height="15" rx="1.4"/>
+      <rect x="96.2" y="101" width="7.6" height="23" rx="1.8"/>
+      <rect x="94" y="140" width="12" height="32" rx="2.4"/>
+    </g>
+  </g>
+</svg>
